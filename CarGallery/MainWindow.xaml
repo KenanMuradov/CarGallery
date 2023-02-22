@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarGallery"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="250">
+        Title="MainWindow" Height="450" Width="800" MinWidth="250"  Icon="C:\Users\User\source\repos\CarGallery\CarGallery\StaticResources\Images\MyLogo.png">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="CustomTextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -88,6 +88,25 @@
                     Style="{StaticResource MaterialDesignTabRadioButtonTop}"
                     Margin="4"
                     Content="Multi"/>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Margin="5"
+                     Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                     ToolTip="Resource name: MaterialDesignPaperSecondaryLightButton"
+                     Content="Start"/>
+                <Button
+                     Grid.Column="1"
+                     Margin="5"
+                     Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                     ToolTip="Resource name: MaterialDesignPaperSecondaryLightButton"
+                     Content="Cancel"/>
             </Grid>
         </Grid>
     </Grid>

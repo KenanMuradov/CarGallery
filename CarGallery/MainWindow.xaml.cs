@@ -27,17 +27,6 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = this;
-        var jsonTxt = File.ReadAllText(@"C:\Users\User\Desktop\MOCK_DATA.json");
-
-        Cars = JsonSerializer.Deserialize<ObservableCollection<Car>>(jsonTxt);
-
-        try
-        {
-            ArgumentNullException.ThrowIfNull(Cars);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.Message);
-        }
+        Cars = new();
     }
 }
