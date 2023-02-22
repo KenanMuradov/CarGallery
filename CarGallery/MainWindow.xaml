@@ -1,0 +1,94 @@
+﻿<Window x:Class="CarGallery.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarGallery"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" MinWidth="250">
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="CustomTextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#8DA7BE"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Background="#0A2239">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <ScrollViewer Margin="0,10,0,0" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Cars}">
+                <ItemsControl.ItemsPanel >
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemWidth="200" ItemHeight="250"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10 " BorderThickness="2" BorderBrush="Black">
+                            <StackPanel Orientation="Vertical">
+                                <Image Width="100" Height="150" Source="{Binding ImagePath}"></Image>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Text="Make: "/>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Grid.Column="1" Text="{Binding Make}"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Text="Model: "/>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Grid.Column="1" Text="{Binding Model}"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Text="Year: "/>
+                                    <TextBlock Style="{StaticResource CustomTextBlock}" Grid.Column="1" Text="{Binding Year}"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton
+                    Foreground="#8DA7BE"
+                    Name="rbSingle"
+                    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+                    Margin="4"
+                    Content="Single" />
+                <RadioButton
+                    Foreground="#8DA7BE"
+                    Name="rbMulti"
+                    Grid.Column="1"
+                    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+                    Margin="4"
+                    Content="Multi"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
