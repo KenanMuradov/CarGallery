@@ -99,13 +99,12 @@
                 <Button
                     Margin="5"
                      Style="{StaticResource MaterialDesignFlatAccentBgButton}"
-                     ToolTip="Resource name: MaterialDesignPaperSecondaryLightButton"
-                     Content="Start"/>
+                     Content="Start" Click="BtnStart_Click"/>
                 <Button
+                     IsEnabled="False"
                      Grid.Column="1"
                      Margin="5"
                      Style="{StaticResource MaterialDesignFlatAccentBgButton}"
-                     ToolTip="Resource name: MaterialDesignPaperSecondaryLightButton"
                      Content="Cancel"/>
             </Grid>
         </Grid>
