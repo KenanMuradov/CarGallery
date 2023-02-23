@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarGallery"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" MinWidth="250"  Icon="C:\Users\User\source\repos\CarGallery\CarGallery\StaticResources\Images\MyLogo.png">
+        Title="MainWindow" Height="450" Width="800" MinWidth="250">
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="CustomTextBlock">
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -88,6 +88,34 @@
                     Style="{StaticResource MaterialDesignTabRadioButtonTop}"
                     Margin="4"
                     Content="Multi"/>
+            </Grid>
+
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+
+                <TextBlock 
+                    VerticalAlignment="Center" 
+                    Foreground="#8DA7BE" 
+                    FontSize="15" 
+                    HorizontalAlignment="Center" 
+                    Text="Execution Time:"/>
+                
+                <TextBlock 
+                    Name="tbTimeSpan"
+                    Grid.Column="1" 
+                    VerticalAlignment="Center" 
+                    Foreground="#8DA7BE" 
+                    FontSize="15" 
+                    HorizontalAlignment="Center"
+                    Text="00:00:00"/>
+
+
+
             </Grid>
 
             <Grid Grid.Column="2">

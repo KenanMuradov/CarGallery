@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,15 +24,13 @@ namespace CarGallery;
 public partial class MainWindow : Window
 {
     public ObservableCollection<Car>? Cars { get; set; }
+    private CancellationTokenSource? _cts = new();
 
     public MainWindow()
     {
         InitializeComponent();
         DataContext = this;
         Cars = new();
-
-        var directory = new DirectoryInfo(@"..\..\..\JsonFakeData");
-
     }
 
     private void BtnStart_Click(object sender, RoutedEventArgs e)
@@ -53,9 +52,11 @@ public partial class MainWindow : Window
 
     private void AddCarsWithSingleThread()
     {
+
         Cars?.Clear();
         new Thread(() =>
         {
+            var watch = Stopwatch.StartNew();
             var directory = new DirectoryInfo(@"..\..\..\JsonFakeData");
             foreach (var file in directory.GetFiles())
             {
@@ -69,10 +70,13 @@ public partial class MainWindow : Window
                         foreach (var car in carlist)
                         {
                             Dispatcher.Invoke(() => Cars?.Add(car));
+                            Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
                             Thread.Sleep(100);
                         }
                 }
             }
+            watch.Stop();
+            Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
         }).Start();
     }
 
@@ -83,12 +87,13 @@ public partial class MainWindow : Window
         var directory = new DirectoryInfo(@"..\..\..\JsonFakeData");
 
         var sync = new object();
+        var watch = Stopwatch.StartNew();
 
         foreach (var file in directory.GetFiles())
         {
-            if(file.Extension==".json")
+            if (file.Extension == ".json")
             {
-                ThreadPool.QueueUserWorkItem(state=>
+                ThreadPool.QueueUserWorkItem(state =>
                 {
                     var jsonTxt = File.ReadAllText(file.FullName);
 
@@ -96,16 +101,15 @@ public partial class MainWindow : Window
 
                     if (carlist is not null)
                     {
-                        lock(sync)
+                        foreach (var car in carlist)
                         {
-                            foreach (var car in carlist)
-                            {
+                            lock (sync)
                                 Dispatcher.Invoke(() => Cars?.Add(car));
-                                Thread.Sleep(100);
-                            }
+
+                            Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
+                            Thread.Sleep(100);
                         }
-                    }    
-                        
+                    }
                 });
             }
         }
