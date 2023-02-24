@@ -41,16 +41,20 @@ public partial class MainWindow : Window
             return;
         }
 
+        BtnStart.IsEnabled = false;
+        BtnCancel.IsEnabled = true;
+
+        _cts = new();
 
         if (rbSingle.IsChecked == true)
-            AddCarsWithSingleThread();
+            AddCarsWithSingleThread(_cts.Token);
 
         if (rbMulti.IsChecked == true)
-            AddCarsWithMultiThread();
+            AddCarsWithMultiThread(_cts.Token);
     }
 
 
-    private void AddCarsWithSingleThread()
+    private void AddCarsWithSingleThread(CancellationToken token)
     {
 
         Cars?.Clear();
@@ -60,6 +64,7 @@ public partial class MainWindow : Window
             var directory = new DirectoryInfo(@"..\..\..\JsonFakeData");
             foreach (var file in directory.GetFiles())
             {
+
                 if (file.Extension == ".json")
                 {
                     var jsonTxt = File.ReadAllText(file.FullName);
@@ -69,6 +74,15 @@ public partial class MainWindow : Window
                     if (carlist is not null)
                         foreach (var car in carlist)
                         {
+                            if (token.IsCancellationRequested)
+                            {
+                                watch.Stop();
+                                Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
+                                Dispatcher.Invoke(() => BtnStart.IsEnabled = true);
+                                Dispatcher.Invoke(() => BtnCancel.IsEnabled = false);
+                                break;
+                            }
+
                             Dispatcher.Invoke(() => Cars?.Add(car));
                             Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
                             Thread.Sleep(100);
@@ -77,10 +91,12 @@ public partial class MainWindow : Window
             }
             watch.Stop();
             Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
+            Dispatcher.Invoke(() => BtnStart.IsEnabled = true);
+            Dispatcher.Invoke(() => BtnCancel.IsEnabled = false);
         }).Start();
     }
 
-    private void AddCarsWithMultiThread()
+    private void AddCarsWithMultiThread(CancellationToken token)
     {
         Cars?.Clear();
 
@@ -103,6 +119,16 @@ public partial class MainWindow : Window
                     {
                         foreach (var car in carlist)
                         {
+
+                            if (token.IsCancellationRequested)
+                            {
+                                watch.Stop();
+                                Dispatcher.Invoke(() => tbTimeSpan.Text = watch.Elapsed.ToString());
+                                Dispatcher.Invoke(() => BtnStart.IsEnabled = true);
+                                Dispatcher.Invoke(() => BtnCancel.IsEnabled = false);
+                                break;
+                            }
+
                             lock (sync)
                                 Dispatcher.Invoke(() => Cars?.Add(car));
 
@@ -110,9 +136,19 @@ public partial class MainWindow : Window
                             Thread.Sleep(100);
                         }
                     }
+                    Dispatcher.Invoke(() => BtnStart.IsEnabled = true);
+                    Dispatcher.Invoke(() => BtnCancel.IsEnabled = false);
                 });
             }
         }
     }
 
+    private void BtnCancel_Click(object sender, RoutedEventArgs e)
+    {
+        _cts?.Cancel();
+        var x =_cts.Token.IsCancellationRequested;
+        BtnCancel.IsEnabled = false;
+        BtnStart.IsEnabled = true;
+        tbTimeSpan.Text = "00:00:00";
+    }
 }

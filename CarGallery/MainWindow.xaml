@@ -125,15 +125,17 @@
                 </Grid.ColumnDefinitions>
 
                 <Button
+                    Name="BtnStart"
                     Margin="5"
                      Style="{StaticResource MaterialDesignFlatAccentBgButton}"
                      Content="Start" Click="BtnStart_Click"/>
                 <Button
+                    Name="BtnCancel"
                      IsEnabled="False"
                      Grid.Column="1"
                      Margin="5"
                      Style="{StaticResource MaterialDesignFlatAccentBgButton}"
-                     Content="Cancel"/>
+                     Content="Cancel" Click="BtnCancel_Click"/>
             </Grid>
         </Grid>
     </Grid>
