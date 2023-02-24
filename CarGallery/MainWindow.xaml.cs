@@ -146,7 +146,6 @@ public partial class MainWindow : Window
     private void BtnCancel_Click(object sender, RoutedEventArgs e)
     {
         _cts?.Cancel();
-        var x =_cts.Token.IsCancellationRequested;
         BtnCancel.IsEnabled = false;
         BtnStart.IsEnabled = true;
         tbTimeSpan.Text = "00:00:00";
